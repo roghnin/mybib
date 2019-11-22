@@ -1,0 +1,749 @@
+This is a mesh of bib file and markdown file that I use for my own records.
+
+This file contains papers related to NVM programming and storage models.
+
+Papers marked with (*) are from (or co-authored by somebody from) Synch group at
+URCS.
+
+# Starting points:
+```bibtex
+@article{rudoff-login-2017,
+  title={Persistent memory programming},
+  author={Rudoff, Andy},
+  journal={Login: The Usenix Magazine},
+  volume={42},
+  pages={34--40},
+  year={2017}
+}
+```
+
+# Persistence theory:
+
+### Durable Linearizability (*):
+```bibtex
+@inproceedings{izraelevitz-disc-2016,
+  title={Linearizability of persistent memory objects under a full-system-crash failure model},
+  author={Izraelevitz, Joseph and Mendes, Hammurabi and Scott, Michael L},
+  booktitle={International Symposium on Distributed Computing},
+  pages={313--327},
+  year={2016},
+  organization={Springer}
+}
+```
+
+### Nesting-safe recoverable linearizability:
+```bibtex
+@inproceedings{attiya-podc-2018,
+  title={Nesting-safe recoverable linearizability: Modular constructions for non-volatile memory},
+  author={Attiya, Hagit and Ben-Baruch, Ohad and Hendler, Danny},
+  booktitle={Proceedings of the 2018 ACM Symposium on Principles of Distributed Computing},
+  pages={7--16},
+  year={2018},
+  organization={ACM}
+}
+```
+
+# NVM Programming models:
+
+## Lock-based systems:
+
+### Atlas
+```bibtex
+@inproceedings{chakrabarti-oopsla-2014,
+ author = {Chakrabarti, Dhruva R. and Boehm, Hans-J. and Bhandari, Kumud},
+ title = {Atlas: Leveraging Locks for Non-volatile Memory Consistency},
+ booktitle = {Proceedings of the 2014 ACM International Conference on Object Oriented Programming Systems Languages \& Applications},
+ series = {OOPSLA '14},
+ year = {2014},
+ location = {Portland, Oregon, USA},
+ pages = {433--452},
+ numpages = {20},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+} 
+```
+
+### JustDo (*)
+```bibtex
+@inproceedings{izraelevitz-asplos-2014,
+ author = {Izraelevitz, Joseph and Kelly, Terence and Kolli, Aasheesh},
+ title = {Failure-Atomic Persistent Memory Updates via JUSTDO Logging},
+ booktitle = {Proceedings of the Twenty-First International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS '16},
+ year = {2016},
+ location = {Atlanta, Georgia, USA},
+ numpages = {16},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+} 
+```
+
+### iDo (*)
+```bibtex
+@inproceedings{liu-micro-2018,
+  title={iDO: Compiler-directed failure atomicity for nonvolatile memory},
+  author={Liu, Qingrui and Izraelevitz, Joseph and Lee, Se Kwon and Scott, Michael L and Noh, Sam H and Jung, Changhee},
+  booktitle={2018 51st Annual IEEE/ACM International Symposium on Microarchitecture (MICRO)},
+  pages={258--270},
+  year={2018},
+  organization={IEEE}
+}
+```
+
+## Transaction-based systems:
+
+### Mnemosyne
+* Persistent regions: only a portion of memory is persistent.
+    * records the virtual-physical mapping of persistent regions
+    * SCM pages are swapped to backing files so multiple applications can share
+      access to them.
+    * pages are mapped using *pmap*, and pointers pointing to persistent regions
+      are labeled *persistent*
+* Consistency
+    * Single (atomic) variable update
+    * Append updates: useful for logs
+    * shadow updates
+        * references can only be modified after new data has completed writing
+        * best for trees - atomic by modifying a single pointer
+    * In-place updates with transactions
+* Durable memory transactions
+    * transaction system:
+        * write-ahead redo logging: less ordering constraints on writes, commits
+          and reads are slower.
+            * logs only writes to persistent regions
+            * new values and address are written in the log and buffered in
+              vol-memory
+            * log is flushed on commitment. value is optional
+        * encounter-time locking: for conflict detection
+            * an array of locks in volatile memory, each covers a portion of
+              addr space
+            * transaction continues by trying to grab a lock.
+            * if fails, abort the transaction and start over.
+```bibtex
+@inproceedings{volos-2011,
+  title={Mnemosyne: Lightweight persistent memory},
+  author={Volos, Haris and Tack, Andres Jaan and Swift, Michael M},
+  booktitle={ACM SIGARCH Computer Architecture News},
+  volume={39},
+  number={1},
+  pages={91--104},
+  year={2011},
+  organization={ACM}
+}
+```
+
+### PMDK
+```bibtex
+@misc{rudoff-pmdk-2014,
+ author         = {Andy Rudoff
+                and Marcin Slusarz},
+ year           = {2014},
+ month          = sep,
+ title          = {Persistent Memory Development Kit},
+ note           = {\url{pmem.io/pmdk/}},
+ lastaccessed   = {April 4, 2019},
+}
+```
+
+### QSTM (*)
+```bibtex
+@techreport{beadle-qstm-2019,
+ author         = {H. Alan Beadle 
+                and Wentao Cai 
+                and Haosen Wen
+                and Michael L. Scott},
+ institution    = {Department of Computer Science, University of Rochester},
+ month          = apr,
+ number         = {TR 1006},
+ title          = {Towards Efficient Nonblocking Persistent Software Transactional Memory},
+ year           = {2019},
+}
+```
+
+### Pisces: NVM Transactional Memory
+* Problem: In current PTMs, reads suffer from persistency overhead and
+  read-indirection overhead.
+* Key idea: Use dual-version concurrency control instead of multi-version to
+  reduce read-indirection overhead; Decouple persistency, committing and
+  writeback phases to take write accesses to NVM and write blocking off the
+  critical path.
+* Details:
+    * The system maintains a global timestamp. A read return a version when its
+      tx timestamp is no smaller than the version timestamp of a block; Commit
+      record the current global timestamp as its end timestamp and increase
+      (blocking) the global timestamp; Writebacks of a tx will wait until all
+      other tx begin timestamp go pass its end timestamp (grace period).
+    * Tm-write acquires per-object lock. It uses the "next" pointer field as
+      lock.
+    * Reads are only blocked when the owner Tx of some object is updating its
+      end timestamp and global timestamp. This is marked by "inCritical" flag.
+* Other notes:
+    * SI is not practical for all applications.
+    * Write skew is a main drawback.
+```bibtex
+@inproceedings{gu-atc-2019,
+  title={Pisces: A Scalable and Efficient Persistent Transactional Memory},
+  author={Gu, Jinyu and Yu, Qianqian and Wang, Xiayang and Wang, Zhaoguo and Zang, Binyu and Guan, Haibing and Chen, Haibo},
+  booktitle={2019 $\{$USENIX$\}$ Annual Technical Conference ($\{$USENIX$\}$$\{$ATC$\}$ 19)},
+  pages={913--928},
+  year={2019}
+}
+```
+### OneFile
+```bibtex
+@inproceedings{ramalhete-dsn-2019,
+  title={OneFile: A Wait-Free Persistent Transactional Memory},
+  author={Ramalhete, Pedro and Correia, Andreia and Felber, Pascal and Cohen, Nachshon},
+  booktitle={2019 49th Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN)},
+  pages={151--163},
+  year={2019},
+  organization={IEEE}
+}
+```
+
+### Luna
+```bibtex
+@inproceedings{shu-nvmsa-2019,
+  title={Luna-TX: An Optimized Transactional Mechanism for Persistent Memory},
+  author={Shu, Hongping and Liu, Hao and Chen, Hongyu and Lu, Youyou and Shu, Jiwu},
+  booktitle={2019 IEEE Non-Volatile Memory Systems and Applications Symposium (NVMSA)},
+  pages={1--6},
+  year={2019},
+  organization={IEEE}
+}
+```
+
+### PMCAS
+```bibtex
+@inproceedings{pavlovic-podc-2018,
+  title={Brief announcement: Persistent multi-word compare-and-swap},
+  author={Pavlovic, Matej and Kogan, Alex and Marathe, Virendra J and Harris, Tim},
+  booktitle={Proceedings of the 2018 ACM Symposium on Principles of Distributed Computing},
+  pages={37--39},
+  year={2018},
+  organization={ACM}
+}
+```
+
+### Romulus
+```bibtex
+@inproceedings{correia-spaa-2018,
+  title={Romulus: Efficient algorithms for persistent transactional memory},
+  author={Correia, Andreia and Felber, Pascal and Ramalhete, Pedro},
+  booktitle={Proceedings of the 30th on Symposium on Parallelism in Algorithms and Architectures},
+  pages={271--282},
+  year={2018},
+  organization={ACM}
+}
+```
+
+### Pangolin
+```bibtex
+@inproceedings{zhang-usenix-2019,
+  title={Pangolin: A Fault-Tolerant Persistent Memory Programming Library},
+  author={Zhang, Lu and Swanson, Steven},
+  booktitle={2019 $\{$USENIX$\}$ Annual Technical Conference ($\{$USENIX$\}$$\{$ATC$\}$ 19)},
+  year={2019}
+}
+```
+
+### Transforming STM into PTM
+```bibtex
+@inproceedings{zardoshti-pact-2019,
+  title={Optimizing Persistent Memory Transactions},
+  author={Zardoshti, Pantea and Zhou, Tingzhe and Liu, Yujie and Spear, Michael},
+  booktitle={2019 28th International Conference on Parallel Architectures and Compilation Techniques (PACT)},
+  pages={219--231},
+  year={2019},
+  organization={IEEE}
+}
+```
+
+## Others & Utils:
+
+### Refined NVM logging using validity bits
+* Problem: Decide which entry is valid on NVM after a crash, given arbitrary
+  crashes that invalidates cache contents; Each write to NVM log entry usually
+  take 2 roundtrips to NVM.
+* Key idea: The last store to a cache line is sent to memory no earlier than
+  previous stores to the same cache line. If we can determine that the last
+  store to a cache line $c$ is persisted, then cache line $c$ is persisted.
+* Details:
+    * The "last store" is store(s) to validity bit(s). 
+        * CSO-VB (data fits in a single cache line): When the payload has bits
+          to spare as validity bits (VB), we update those bits right before
+          flush and fence for each cache line. The current "meaning" of VB is
+          indicated by some bit in head pointer and flipped when entries are
+          reused, which is natural in circular logs.
+        * CSO-Random (data can be consecutive): Initialize the memory with a
+          64-bit random value $r$, and the difference between real data and $r$
+          at the last words of each cache line indicates validity.
+        * CSO-FVB (flexible validity bit): Read the original value $v_0$ of the
+          memory allocated for the data. For each word $w_0$ in $v_0$, find its
+          last different bit from the corresponding word $w$ in new data and use
+          it as validity bit. Put the location of the bit in a separate metadata
+          field in the front of the entry. Use an additional validity bit to
+          validate the metadata itself.
+* Other notes:
+    * No explicit synchronization provided. Good reference for thread-local
+      structures.
+    * This algorithm fits consecutive logs better. Pointer-rich logs (like
+      DCAS-style TMs) might naturally need only one roundtrip to NVM to persist
+      a write. Need further discussion.
+```bibtex
+@article{cohen-oopsla-2017,
+  title={Efficient logging in non-volatile memory by exploiting coherency protocols},
+  author={Cohen, Nachshon and Friedman, Michal and Larus, James R},
+  journal={Proceedings of the ACM on Programming Languages},
+  volume={1},
+  number={OOPSLA},
+  pages={67},
+  year={2017},
+  publisher={ACM}
+}
+```
+
+### Failure-atomic msynch()
+* Problem: failure-atomic updates to non-volatile storage in batches.
+* Details:
+    * Semantics:
+        * MS_ASYNC: define and enqueue atomic update without waiting for
+          completion
+        * MS_INVALIDATE: roll back to the last MS_ASYNC
+    * Challenges:
+        * Existing write back functions of ext4 create a separate handle for
+          each dirty page in a ext4_writepage() call, while JDB2, the journal
+          underneath ext4, only ensures atomicity in per-handle granularity.
+          Their implementation make sure that all writebacks of an msynch() are
+          packed in a single handle.
+        * Ensure modified pages are not written back until an msynch(), even if
+          memory pressure arises. The OS can write dirty pages to temporary
+          durable storage and swap them in on msynch.
+* Notes:
+    * Msynch requires OS support
+    * It only provides failure atomicity in msynch-granularity, leaving
+      synchronization to the application.
+```bibtex
+@inproceedings{park-eurosys-2013,
+ author = {Park, Stan and Kelly, Terence and Shen, Kai},
+ title = {Failure-atomic Msync(): A Simple and Efficient Mechanism for Preserving the Integrity of Durable Data},
+ booktitle = {Proceedings of the 8th ACM European Conference on Computer Systems},
+ series = {EuroSys '13},
+ year = {2013},
+ location = {Prague, Czech Republic},
+ pages = {225--238},
+ numpages = {14},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+} 
+```
+
+### In-place update of persistent stm
+* key idea: keep replica(s) for backup. Do updates in-place and copy the update
+  to replica at commit time before releasing the lock.
+```bibtex
+@inproceedings{memaripour-eurosys-2017,
+  title={Atomic in-place updates for non-volatile main memories with kamino-tx},
+  author={Memaripour, Amirsaman and Badam, Anirudh and Phanishayee, Amar and Zhou, Yanqi and Alagappan, Ramnatthan and Strauss, Karin and Swanson, Steven},
+  booktitle={Proceedings of the Twelfth European Conference on Computer Systems},
+  pages={499--512},
+  year={2017},
+  organization={ACM}
+}
+```
+
+### Object-Oriented recovery
+* problem: object-oriented programs, in recovery, may run into issues:
+    * transient fields (like pointers to temporal resources) may not be valid
+      any more
+    * address invalidation due to address randomization, for read-only fields,
+      libraries and v-tables.
+    * code/library/os upgrade across executions 
+* key idea: compiler support.
+    * keep the nv-heap layout and relocate all (traditional, not fat or smart)
+      pointers based on the difference between old and new base (virtual)
+      address. Can be done lazily.
+    * require and run custom re-constructor function at recover time.
+* note:
+    * only support access from single process.
+```bibtex
+@article{cohen-oopsla-2018,
+  title={Object-oriented recovery for non-volatile memory},
+  author={Cohen, Nachshon and Aksun, David T and Larus, James R},
+  journal={Proceedings of the ACM on Programming Languages},
+  volume={2},
+  number={OOPSLA},
+  pages={153},
+  year={2018},
+  publisher={ACM}
+}
+```
+
+### PPTR
+```bibtex
+@inproceedings{chen-micro-2017,
+ author         = {Chen, Guoyang 
+                and Zhang, Lei 
+                and Budhiraja, Richa 
+                and Shen, Xipeng 
+                and Wu, Youfeng},
+ title          = {Efficient Support of Position Independence on Non-volatile Memory},
+ booktitle      = {50th IEEE/ACM Intl. Symp. on Microarchitecture (MICRO)},
+ year           = {2017},
+ month          = oct,
+ isbn           = {978-1-4503-4952-9},
+ address        = {Cambridge, MA},
+ pages          = {191--203},
+ numpages       = {13},
+ url            = {http://doi.acm.org/10.1145/3123939.3124543},
+ doi            = {10.1145/3123939.3124543},
+ acmid          = {3124543},
+}
+```
+
+### NV-Heaps:
+```bibtex
+@inproceedings{coburn-asplos-2011,
+ author = {Coburn, Joel and Caulfield, Adrian M. and Akel, Ameen and Grupp, Laura M. and Gupta, Rajesh K. and Jhala, Ranjit and Swanson, Steven},
+ title = {NV-Heaps: Making Persistent Objects Fast and Safe with Next-generation, Non-volatile Memories},
+ booktitle = {Proceedings of the Sixteenth International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS XVI},
+ year = {2011},
+ location = {Newport Beach, California, USA},
+ pages = {105--118},
+ numpages = {14},
+ doi = {10.1145/1950365.1950380},
+}
+```
+
+### REWIND
+```bibtex
+@article{chatzistergiou-vldb-2015,
+ author = {Chatzistergiou, Andreas and Cintra, Marcelo and Viglas, Stratis D.},
+ title = {REWIND: \≪U\≫Re\≪/U\≫Covery \≪U\≫W\≪/U\≫Rite-ahead System for \≪U\≫I\≪/U\≫N-memory \≪U\≫N\≪/U\≫On-volatile \≪U\≫D\≪/U\≫Ata-structures},
+ journal = {Proc. VLDB Endow.},
+ issue_date = {January 2015},
+ volume = {8},
+ number = {5},
+ month = jan,
+ year = {2015},
+ issn = {2150-8097},
+ pages = {497--508},
+ numpages = {12},
+ url = {http://dx.doi.org/10.14778/2735479.2735483},
+ doi = {10.14778/2735479.2735483},
+ acmid = {2735483},
+ publisher = {VLDB Endowment},
+}
+```
+
+## Persistent data structures
+
+### Dali (*)
+```bibtex
+@inproceedings{nawab-disc-2017,
+ author         = {Faisal Nawab 
+                and Joseph Izraelevitz 
+                and Terence Kelly 
+                and Charles B. Morrey III 
+                and Dhruva R. Chakrabarti 
+                and Michael L. Scott},
+ title          = {{Dal{\'i}: A Periodically Persistent Hash Map}},
+ booktitle      = {Intl. Symp. on Distributed Computing (DISC)},
+ pages          = {37:1--37:16},
+ year           = {2017},
+ month          = oct,
+ volume         = {91},
+ address        = {Vienna, Austria},
+}
+```
+
+### Persistent queue
+```bibtex
+@inproceedings{friedman-ppopp-2018,
+ author = {Friedman, Michal and Herlihy, Maurice and Marathe, Virendra and Petrank, Erez},
+ title = {A Persistent Lock-free Queue for Non-volatile Memory},
+ booktitle = {Proceedings of the 23rd ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
+ year = {2018},
+ pages = {28--40},
+ numpages = {13}
+} 
+```
+
+### persistent lock-free data structures
+```bibtex
+@article{attiya-2019,
+  title={Tracking in Order to Recover: Recoverable Lock-Free Data Structures},
+  author={Attiya, Hagit and Ben-Baruch, Ohad and Fatourou, Panagiota and Hendler, Danny and Kosmas, Eleftherios},
+  journal={arXiv preprint arXiv:1905.13600},
+  year={2019}
+}
+```
+
+### persistent sets
+```bibtex
+@article{zuriel-oopsla-2019,
+ author = {Zuriel, Yoav and Friedman, Michal and Sheffi, Gali and Cohen, Nachshon and Petrank, Erez},
+ title = {Efficient Lock-free Durable Sets},
+ journal = {Proc. ACM Program. Lang.},
+ issue_date = {October 2019},
+ volume = {3},
+ number = {OOPSLA},
+ month = oct,
+ year = {2019},
+ articleno = {128},
+ numpages = {26},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+}
+```
+
+### persistent data structures
+```bibtex
+@article{mahapatra-2019,
+  title={Don't Persist All: Efficient Persistent Data Structures},
+  author={Mahapatra, Pratyush and Hill, Mark D and Swift, Michael M},
+  journal={arXiv preprint arXiv:1905.13011},
+  year={2019}
+}
+```
+
+## Porting existing code
+
+### NVMOVE:
+```bibtex
+@inproceedings{chauhan2016nvmove,
+  title={$\{$NVMOVE$\}$: Helping Programmers Move to Byte-Based Persistence},
+  author={Chauhan, Himanshu and Calciu, Irina and Chidambaram, Vijay and Schkufza, Eric and Mutlu, Onur and Subrahmanyam, Pratap},
+  booktitle={4th Workshop on Interactions of NVM/Flash with Operating Systems and Workloads ($\{$INFLOW$\}$ 16)},
+  year={2016}
+}
+```
+
+### Breeze
+```bibtex
+@inproceedings{memaripour-iccd-2018,
+  title={Breeze: User-Level Access to Non-Volatile Main Memories for Legacy Software},
+  author={Memaripour, Amirsaman and Swanson, Steven},
+  booktitle={2018 IEEE 36th International Conference on Computer Design (ICCD)},
+  pages={413--422},
+  year={2018},
+  organization={IEEE}
+}
+```
+
+## Managed language support
+
+### Espresso -- Java extension for NVM
+```bibtex
+@inproceedings{wu-asplos-2018,
+ author = {Wu, Mingyu and Zhao, Ziming and Li, Haoyu and Li, Heting and Chen, Haibo and Zang, Binyu and Guan, Haibing},
+ title = {Espresso: Brewing Java For More Non-Volatility with Non-volatile Memory},
+ booktitle = {Proceedings of the Twenty-Third International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS '18},
+ year = {2018},
+ location = {Williamsburg, VA, USA},
+ pages = {70--83},
+ numpages = {14},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+} 
+```
+
+### JSNVM -- javascript extension for NVM
+```bibtex
+@inproceedings{xu-icpads-2018,
+  title={JSNVM: Supporting Data Persistence in JavaScript Using Non-Volatile Memory},
+  author={Xu, Hao and Zhu, Yanmin and Chen, Yuting and Hunag, Linpeng and Li, Tianyou and Deng, Pan},
+  booktitle={2018 IEEE 24th International Conference on Parallel and Distributed Systems (ICPADS)},
+  pages={457--464},
+  year={2018},
+  organization={IEEE}
+}
+```
+
+# NVM Storage & file systems:
+
+### NOVA file system
+```bibtex
+@inproceedings{xu-fast-2016,
+  title={$\{$NOVA$\}$: A Log-structured File System for Hybrid Volatile/Non-volatile Main Memories},
+  author={Xu, Jian and Swanson, Steven},
+  booktitle={14th $\{$USENIX$\}$ Conference on File and Storage Technologies ($\{$FAST$\}$ 16)},
+  pages={323--338},
+  year={2016}
+}
+```
+
+### NOVA-fortis
+```bibtex
+@inproceedings{xu-sosp-2017,
+  title={NOVA-Fortis: A fault-tolerant non-volatile main memory file system},
+  author={Xu, Jian and Zhang, Lu and Memaripour, Amirsaman and Gangadharaiah, Akshatha and Borase, Amit and Da Silva, Tamires Brito and Swanson, Steven and Rudoff, Andy},
+  booktitle={Proceedings of the 26th Symposium on Operating Systems Principles},
+  pages={478--496},
+  year={2017},
+  organization={ACM}
+}
+```
+
+### Failure-Atomic Slotted Paging
+```bibtex
+@inproceedings{seo-asplos-2017,
+ author = {Seo, Jihye and Kim, Wook-Hee and Baek, Woongki and Nam, Beomseok and Noh, Sam H.},
+ title = {Failure-Atomic Slotted Paging for Persistent Memory},
+ booktitle = {Proceedings of the Twenty-Second International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS '17},
+ year = {2017},
+ location = {Xi'an, China},
+ pages = {91--104},
+ numpages = {14},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+} 
+```
+
+# Data interchange:
+
+### Cap'n proto
+```bibtex
+@misc{capnproto,
+  title={Cap'n Proto: a fast data interchange format},
+  author={Kenton Varda},
+  note={\url{capnproto.org}}
+}
+```
+
+### Boost serialization lib
+```bibtex
+@misc{boost-serialization,
+  title={Boost Serialization Library},
+  note={\url{www.boost.org/doc/libs/1_71_0/libs/serialization/doc/index.html}}
+}
+```
+
+### FlatBuffers
+```bibtex
+@misc{flatbuffers,
+  title={FlatBuffers},
+  note={\url{google.github.io/flatbuffers/}}
+}
+```
+
+### Interweave
+```bibtex
+@inproceedings{chen-lcr-2000,
+  title={Interweave: A middleware system for distributed shared state},
+  author={Chen, DeQing and Dwarkadas, Sandhya and Parthasarathy, Srinivasan and Pinheiro, Eduardo and Scott, Michael L},
+  booktitle={International Workshop on Languages, Compilers, and Run-Time Systems for Scalable Computers},
+  pages={207--220},
+  year={2000},
+  organization={Springer}
+}
+```
+
+
+# NVM driving applications & in-memory databases:
+
+### Godot game engine
+```bibtex
+@misc{godot,
+  title={Godot Game Engine},
+  note={\url{godotengine.org}}
+}
+```
+### RocksDB
+```bibtex
+@misc{rocksdb,
+  title={RocksDB},
+  note={rocksdb.org}
+}
+```
+### NVM as cache in RocksDB
+```bibtex
+@inproceedings{eisenman-eurosys-2018,
+ author = {Eisenman, Assaf and Gardner, Darryl and AbdelRahman, Islam and Axboe, Jens and Dong, Siying and Hazelwood, Kim and Petersen, Chris and Cidon, Asaf and Katti, Sachin},
+ title = {Reducing DRAM Footprint with NVM in Facebook},
+ booktitle = {Proceedings of the Thirteenth EuroSys Conference},
+ series = {EuroSys '18},
+ year = {2018},
+ location = {Porto, Portugal},
+ pages = {42:1--42:13},
+ numpages = {13},
+ publisher = {ACM},
+}
+```
+### Persistent memory region layout in RocksDB
+```bibtex
+@misc{li-nvmrocks-2017,
+  title={NVMRocks: RocksDB on Non-Volatile Memory Systems},
+  author={ Jianhong Li, Andrew Pavlo, Siying Dong},
+  note={istc-bigdata.org/index.php/nvmrocks-rocksdb-on-non-volatile-memory-systems/}
+}
+```
+
+### Redis
+```bibtex
+@misc{redis,
+  title={Redis},
+  note={redis.io}
+}
+```
+
+# Protected Libraries:
+
+### Hodor (*)
+```bibtex
+@inproceedings{hedayati-atc-2019,
+  title={Hodor: Intra-Process Isolation for High-Throughput Data Plane Libraries},
+  author={Hedayati, Mohammad and Gravani, Spyridoula and Johnson, Ethan and Criswell, John and Scott, Michael L and Shen, Kai and Marty, Mike},
+  booktitle={2019 $\{$USENIX$\}$ Annual Technical Conference ($\{$USENIX$\}$$\{$ATC$\}$ 19)},
+  year={2019}
+}
+```
+
+### Janus (*)
+```bibtex
+@techreport{hedayati-tr-2018,
+  title={Janus: Intra-process isolation for high-throughput data plane libraries},
+  author={Hedayati, Mohammad and Gravani, Spyridoula and Johnson, Ethan and Criswell, John and Scott, Michael and Shen, Kai and Marty, Mike},
+  year={2018},
+  institution={Technical Report UR CSD/1004}
+}
+```
+
+### Arrakis
+```bibtex
+@inproceedings{peter-osdi-2013,
+  title={Arrakis: The operating system is the control plane},
+  author={Peter, Simon and Li, Jialin and Zhang, Irene and Ports, Dan RK and Krishnamurthy, Arvind and Anderson, Thomas and Roscoe, Timothy},
+  booktitle={Proc. 11th USENIX Conf. Oper. Syst. Des. Implement},
+  volume={38},
+  number={4},
+  pages={44--47},
+  year={2013}
+}
+```
+### ZygOS
+```bibtex
+@inproceedings{prekas-sosp-2017,
+  title={Zygos: Achieving low tail latency for microsecond-scale networked tasks},
+  author={Prekas, George and Kogias, Marios and Bugnion, Edouard},
+  booktitle={Proceedings of the 26th Symposium on Operating Systems Principles},
+  pages={325--341},
+  year={2017},
+  organization={ACM}
+}
+```
+
+### Demikernel
+```bibtex
+@inproceedings{zhang-hotos-2019,
+  title={I'm Not Dead Yet!: The Role of the Operating System in a Kernel-Bypass Era},
+  author={Zhang, Irene and Liu, Jing and Austin, Amanda and Roberts, Michael Lowell and Badam, Anirudh},
+  booktitle={Proceedings of the Workshop on Hot Topics in Operating Systems},
+  pages={73--80},
+  year={2019},
+  organization={ACM}
+}
+```
