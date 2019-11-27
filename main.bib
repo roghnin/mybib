@@ -416,6 +416,18 @@ URCS.
 }
 ```
 
+### NVThreads
+```bibtex
+@inproceedings{hsu-eurosys-2017,
+  title={NVthreads: Practical persistence for multi-threaded applications},
+  author={Hsu, Terry Ching-Hsiang and Br{\"u}gner, Helge and Roy, Indrajit and Keeton, Kimberly and Eugster, Patrick},
+  booktitle={Proceedings of the Twelfth European Conference on Computer Systems},
+  pages={468--482},
+  year={2017},
+  organization={ACM}
+}
+```
+
 ### REWIND
 ```bibtex
 @article{chatzistergiou-vldb-2015,
@@ -434,6 +446,30 @@ URCS.
  doi = {10.14778/2735479.2735483},
  acmid = {2735483},
  publisher = {VLDB Endowment},
+}
+```
+
+### persist JVM state
+```bibtex
+@inproceedings{suezawa-java-2000,
+  title={Persistent execution state of a Java virtual machine},
+  author={Suezawa, Takashi},
+  booktitle={Proceedings of the ACM 2000 conference on Java Grande},
+  pages={160--167},
+  year={2000},
+  organization={Citeseer}
+}
+```
+
+### Sumatra: language that does thread serialization
+```bibtex
+@inproceedings{acharya-mos-1996,
+  title={Sumatra: A language for resource-aware mobile programs},
+  author={Acharya, Anurag and Ranganathan, Mudumbai and Saltz, Joel},
+  booktitle={International Workshop on Mobile Object Systems},
+  pages={111--130},
+  year={1996},
+  organization={Springer}
 }
 ```
 
@@ -564,6 +600,8 @@ URCS.
 
 # NVM Storage & file systems:
 
+## File systems:
+
 ### NOVA file system
 ```bibtex
 @inproceedings{xu-fast-2016,
@@ -586,6 +624,163 @@ URCS.
   organization={ACM}
 }
 ```
+
+## Data Serialization
+
+### Performance survey of serialization libraries
+```bibtex
+@inproceedings{maeda-dictap-2012,
+  title={Performance evaluation of object serialization libraries in XML, JSON and binary formats},
+  author={Maeda, Kazuaki},
+  booktitle={2012 Second International Conference on Digital Information and Communication Technology and it's Applications (DICTAP)},
+  pages={177--182},
+  year={2012},
+  organization={IEEE}
+}
+```
+
+### Performance survey of serialization libraries on Android JVM
+@inproceedings{sumaray-icuimc-2012,
+  title={A comparison of data serialization formats for optimal efficiency on a mobile platform},
+  author={Sumaray, Audie and Makki, S Kami},
+  booktitle={Proceedings of the 6th international conference on ubiquitous information management and communication},
+  pages={48},
+  year={2012},
+  organization={ACM}
+}
+
+### XML-based object serialization
+* key idea: use compiler support to automatically generate serialization
+  routines for C and C++ data types.
+```bibtex
+@article{van-cpc-2006,
+  title={Toward remote object coherence with compiled object serialization for distributed computing with xml web services},
+  author={Van Engelen, Robert and Zhang, Wei and Govindaraju, Madhusudhan},
+  journal={in the proceedings of Compilers for Parallel Computing (CPC)},
+  pages={441--455},
+  year={2006}
+}
+```
+
+### Binary XML serialization formats interchangable with text-based XML
+```bibtex
+@inproceedings{kangasharju-socp-2007,
+ author = {Kangasharju, Jaakko and Tarkoma, Sasu},
+ title = {Benefits of Alternate XML Serialization Formats in Scientific Computing},
+ booktitle = {Proceedings of the 2007 Workshop on Service-oriented Computing Performance: Aspects, Issues, and Approaches},
+ series = {SOCP '07},
+ year = {2007},
+ location = {Monterey, California, USA},
+ pages = {23--30},
+ numpages = {8},
+ publisher = {ACM},
+}
+```
+
+### In-depth analysis of the drawbacks of object serialization
+* The "inhale" and "exhale" effect brings significant overhead sourced from
+  serialization/deserialization.
+* "Orthogonal persistency" can be one alternative approach: instead of making
+  all persistent classes inherit from a "persistent" class, all objects
+  reachable from persistent root are considered persistent. Reflection is needed
+  in this case of course.
+```bibtex
+@article{evans-tr-2000,
+  title={Why object serialization is inappropriate for providing persistence in java},
+  author={Evans, Huw},
+  journal={Department of Computer Science, The University of Glasgow},
+  year={2000}
+}
+```
+
+### Java thread serialization
+```bibtex
+@inproceedings{bouchenak-aiccsa-2003,
+  title={Techniques for implementing efficient java thread serialization},
+  author={Bouchenak, Sara and Hagimont, Daniel and De Palma, No{\"e}l},
+  booktitle={ACS/IEEE International Conference on Computer Systems and Applications (AICCSA’03)},
+  pages={14--18},
+  year={2003},
+  organization={Citeseer}
+}
+```
+
+### fast object-oriented pickles (serialization)
+* With compiler help, generate static pickling functions at compile time as much as possible.
+* Unlike Java serializer that only serialize to language-specific format, it can work with arbitrary pickle (serialize) format.
+```bibtex
+@inproceedings{miller-oopsla-2013,
+ author = {Miller, Heather and Haller, Philipp and Burmako, Eugene and Odersky, Martin},
+ title = {Instant Pickles: Generating Object-oriented Pickler Combinators for Fast and Extensible Serialization},
+ booktitle = {Proceedings of the 2013 ACM SIGPLAN International Conference on Object Oriented Programming Systems Languages \&\#38; Applications},
+ series = {OOPSLA '13},
+ year = {2013},
+ location = {Indianapolis, Indiana, USA},
+ pages = {183--202},
+ numpages = {20},
+ publisher = {ACM},
+}
+```
+
+### ML pickler combinator
+```bibtex
+@inproceedings{elsman-journal-2005,
+  title={Type-specialized serialization with sharing.},
+  author={Elsman, Martin},
+  booktitle={Trends in Functional Programming},
+  pages={47--62},
+  year={2005}
+}
+```
+
+### Perl pickler combinator
+```bibtex
+@article{kennedy-journal-2004,
+  title={Functional pearl pickler combinators},
+  author={Kennedy, Andrew J},
+  journal={Journal of Functional Programming},
+  volume={14},
+  number={6},
+  pages={727--739},
+  year={2004},
+  publisher={Cambridge University Press}
+}
+```
+
+### OCaml and pickler combinator
+```bibtex
+@inproceedings{yallop-ml-2007,
+  title={Practical generic programming in OCaml},
+  author={Yallop, Jeremy},
+  booktitle={Proceedings of the 2007 workshop on Workshop on ML},
+  pages={83--94},
+  year={2007},
+  organization={ACM}
+}
+```
+### static meta programming
+```bibtex
+@article{skalski-thesis-2005,
+  title={Syntax-extending and type-reflecting macros in an object-oriented language},
+  author={Skalski, Kamil},
+  journal={Master's thesis, University of Warsaw, Poland},
+  year={2005}
+}
+```
+
+
+
+\\
+### SOAP
+```bibtex
+@misc{w3c-soap,
+  title={SOAP 1.1 and 1.2 specifications},
+  author={W3C},
+  note={www.w3c.org}
+}
+``` 
+
+## Utils:
 
 ### Failure-Atomic Slotted Paging
 ```bibtex
@@ -747,3 +942,4 @@ URCS.
   organization={ACM}
 }
 ```
+
