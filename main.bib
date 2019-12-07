@@ -27,9 +27,10 @@ URCS.
   booktitle={International Symposium on Distributed Computing},
   pages={313--327},
   year={2016},
-  organization={Springer}
+  organization={Springer},
+  address={Paris, France}
 }
-```
+```location
 
 ### Nesting-safe recoverable linearizability:
 ```bibtex
@@ -39,11 +40,99 @@ URCS.
   booktitle={Proceedings of the 2018 ACM Symposium on Principles of Distributed Computing},
   pages={7--16},
   year={2018},
-  organization={ACM}
+  organization={ACM},
+  address={Egham, United Kindom}
 }
 ```
 
 # NVM Programming models:
+
+## Legacy persistent programming:
+
+### Unifying persistent and transient views of data:
+```bibtex
+@article{atkinson-journal-1983,
+  title={An approach to persistent programming},
+  author={Atkinson, Malcolm P. and Bailey, Peter J. and Chisholm, Ken J and Cockshott, Paul W and Morrison, Ronald},
+  journal={The computer journal},
+  volume={26},
+  number={4},
+  pages={360--365},
+  year={1983},
+  publisher={The British Computer Society}
+}
+```
+
+### orthogonally persistent object systems
+```bibtex
+@article{atkinson-vldb-1995,
+  title={Orthogonally persistent object systems},
+  author={Atkinson, Malcolm and Morrison, Ronald},
+  journal={The VLDB Journal—The International Journal on Very Large Data Bases},
+  volume={4},
+  number={3},
+  pages={319--402},
+  year={1995},
+  publisher={Springer-Verlag New York, Inc.},
+  address={Zurich, Switzerland}
+}
+```
+
+### mostly-copying orthogonal persistence
+```bibtex
+@inproceedings{hosking-oopsla-1999,
+ author = {Hosking, Antony L. and Chen, Jiawan},
+ title = {Mostly-copying Reachability-based Orthogonal Persistence},
+ booktitle = {Proceedings of the 14th ACM SIGPLAN Conference on Object-oriented Programming, Systems, Languages, and Applications},
+ series = {OOPSLA '99},
+ year = {1999},
+ address = {Denver, Colorado, USA},
+ pages = {382--398},
+ numpages = {17},
+} 
+```
+
+### ObjectStore
+```bibtex
+@article{lamb-1991,
+  title={The ObjectStore database system},
+  author={Lamb, Charles and Landis, Gordon and Orenstein, Jack and Weinreb, Dan},
+  journal={Communications of the ACM},
+  volume={34},
+  number={10},
+  pages={50--63},
+  year={1991},
+  publisher={ACM}
+}
+```
+
+### commercial object-oriented database management systems
+```bibtex
+@article{soloviev-1992,
+  title={An overview of three commercial object-oriented database management systems: ONTOS, ObjectStore, and O 2},
+  author={Soloviev, Valery},
+  journal={ACM SIGMOD Record},
+  volume={21},
+  number={1},
+  pages={93--104},
+  year={1992},
+  publisher={ACM}
+}
+```
+
+### Pointer switzzling
+```bibtex
+@article{wilson-ooos-1991,
+  title={Pointer swizzling at page fault time: Efficiently supporting huge address spaces on standard hardware},
+  author={Wilson, Paul R},
+  journal={ACM SIGARCH Computer Architecture News},
+  volume={19},
+  number={4},
+  pages={6--13},
+  year={1991},
+  publisher={ACM}
+}
+```
 
 ## Lock-based systems:
 
@@ -55,11 +144,10 @@ URCS.
  booktitle = {Proceedings of the 2014 ACM International Conference on Object Oriented Programming Systems Languages \& Applications},
  series = {OOPSLA '14},
  year = {2014},
- location = {Portland, Oregon, USA},
+ address = {Portland, Oregon, USA},
  pages = {433--452},
  numpages = {20},
  publisher = {ACM},
- address = {New York, NY, USA},
 } 
 ```
 
@@ -71,10 +159,9 @@ URCS.
  booktitle = {Proceedings of the Twenty-First International Conference on Architectural Support for Programming Languages and Operating Systems},
  series = {ASPLOS '16},
  year = {2016},
- location = {Atlanta, Georgia, USA},
+ address = {Atlanta, Georgia, USA},
  numpages = {16},
  publisher = {ACM},
- address = {New York, NY, USA},
 } 
 ```
 
@@ -86,7 +173,8 @@ URCS.
   booktitle={2018 51st Annual IEEE/ACM International Symposium on Microarchitecture (MICRO)},
   pages={258--270},
   year={2018},
-  organization={IEEE}
+  organization={IEEE},
+  address={Fukuoka, Japan}
 }
 ```
 
@@ -120,16 +208,18 @@ URCS.
             * transaction continues by trying to grab a lock.
             * if fails, abort the transaction and start over.
 ```bibtex
-@inproceedings{volos-2011,
-  title={Mnemosyne: Lightweight persistent memory},
-  author={Volos, Haris and Tack, Andres Jaan and Swift, Michael M},
-  booktitle={ACM SIGARCH Computer Architecture News},
-  volume={39},
-  number={1},
-  pages={91--104},
-  year={2011},
-  organization={ACM}
-}
+@inproceedings{volos-asplos-2011,
+ author = {Volos, Haris and Tack, Andres Jaan and Swift, Michael M.},
+ title = {Mnemosyne: Lightweight Persistent Memory},
+ booktitle = {Proceedings of the Sixteenth International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS XVI},
+ year = {2011},
+ address = {Newport Beach, California, USA},
+ pages = {91--104},
+ numpages = {14},
+ publisher = {ACM},
+} 
+
 ```
 
 ### PMDK
@@ -189,6 +279,7 @@ URCS.
   year={2019}
 }
 ```
+
 ### OneFile
 ```bibtex
 @inproceedings{ramalhete-dsn-2019,
@@ -197,19 +288,8 @@ URCS.
   booktitle={2019 49th Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN)},
   pages={151--163},
   year={2019},
-  organization={IEEE}
-}
-```
-
-### Luna
-```bibtex
-@inproceedings{shu-nvmsa-2019,
-  title={Luna-TX: An Optimized Transactional Mechanism for Persistent Memory},
-  author={Shu, Hongping and Liu, Hao and Chen, Hongyu and Lu, Youyou and Shu, Jiwu},
-  booktitle={2019 IEEE Non-Volatile Memory Systems and Applications Symposium (NVMSA)},
-  pages={1--6},
-  year={2019},
-  organization={IEEE}
+  organization={IEEE},
+  address={Portland, OR, USA}
 }
 ```
 
@@ -221,7 +301,8 @@ URCS.
   booktitle={Proceedings of the 2018 ACM Symposium on Principles of Distributed Computing},
   pages={37--39},
   year={2018},
-  organization={ACM}
+  organization={ACM},
+  address={Egham, United Kindom}
 }
 ```
 
@@ -233,17 +314,19 @@ URCS.
   booktitle={Proceedings of the 30th on Symposium on Parallelism in Algorithms and Architectures},
   pages={271--282},
   year={2018},
-  organization={ACM}
+  organization={ACM},
+  address={Vienna, Austria}
 }
 ```
 
 ### Pangolin
 ```bibtex
-@inproceedings{zhang-usenix-2019,
+@inproceedings{zhang-atc-2019,
   title={Pangolin: A Fault-Tolerant Persistent Memory Programming Library},
   author={Zhang, Lu and Swanson, Steven},
-  booktitle={2019 $\{$USENIX$\}$ Annual Technical Conference ($\{$USENIX$\}$$\{$ATC$\}$ 19)},
-  year={2019}
+  booktitle={2019 USENIX Annual Technical Conference 19)},
+  year={2019},
+  address={Renton, WA, USA}
 }
 ```
 
@@ -255,9 +338,38 @@ URCS.
   booktitle={2019 28th International Conference on Parallel Architectures and Compilation Techniques (PACT)},
   pages={219--231},
   year={2019},
-  organization={IEEE}
+  organization={IEEE},
+  address={Seattle, WA, USA}
 }
 ```
+
+### remove persistence dependencies in non-volatile transactions
+```bibtex
+@inproceedings{kolli-asplos-2016,
+ author = {Kolli, Aasheesh and Pelley, Steven and Saidi, Ali and Chen, Peter M. and Wenisch, Thomas F.},
+ title = {High-Performance Transactions for Persistent Memories},
+ booktitle = {Proceedings of the Twenty-First International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS '16},
+ year = {2016},
+ address = {Atlanta, Georgia, USA},
+ numpages = {13},
+ publisher = {ACM},
+}
+```
+
+### DudeTM
+```bibtex
+@inproceedings{liu-asplos-2017,
+ author = {Liu, Mengxing and Zhang, Mingxing and Chen, Kang and Qian, Xuehai and Wu, Yongwei and Zheng, Weimin and Ren, Jinglei},
+ title = {DudeTM: Building Durable Transactions with Decoupling for Persistent Memory},
+ booktitle = {Proceedings of the Twenty-Second International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS '17},
+ year = {2017},
+ address = {Xi'an, China},
+ pages = {329--343},
+ numpages = {15},
+ publisher = {ACM},
+} 
 
 ## Others & Utils:
 
@@ -299,11 +411,12 @@ URCS.
   number={OOPSLA},
   pages={67},
   year={2017},
-  publisher={ACM}
+  publisher={ACM},
+  address={Vancouver, Canada}
 }
 ```
 
-### Failure-atomic msynch()
+### Failure-atomic msync()
 * Problem: failure-atomic updates to non-volatile storage in batches.
 * Details:
     * Semantics:
@@ -314,13 +427,13 @@ URCS.
         * Existing write back functions of ext4 create a separate handle for
           each dirty page in a ext4_writepage() call, while JDB2, the journal
           underneath ext4, only ensures atomicity in per-handle granularity.
-          Their implementation make sure that all writebacks of an msynch() are
+          Their implementation make sure that all writebacks of an msync() are
           packed in a single handle.
-        * Ensure modified pages are not written back until an msynch(), even if
+        * Ensure modified pages are not written back until an msync(), even if
           memory pressure arises. The OS can write dirty pages to temporary
-          durable storage and swap them in on msynch.
+          durable storage and swap them in on msync.
 * Notes:
-    * Msynch requires OS support
+    * Msync requires OS support
     * It only provides failure atomicity in msynch-granularity, leaving
       synchronization to the application.
 ```bibtex
@@ -330,15 +443,14 @@ URCS.
  booktitle = {Proceedings of the 8th ACM European Conference on Computer Systems},
  series = {EuroSys '13},
  year = {2013},
- location = {Prague, Czech Republic},
+ address = {Prague, Czech Republic},
  pages = {225--238},
  numpages = {14},
  publisher = {ACM},
- address = {New York, NY, USA},
 } 
 ```
 
-### In-place update of persistent stm
+### In-place update of persistent blocks
 * key idea: keep replica(s) for backup. Do updates in-place and copy the update
   to replica at commit time before releasing the lock.
 ```bibtex
@@ -348,7 +460,8 @@ URCS.
   booktitle={Proceedings of the Twelfth European Conference on Computer Systems},
   pages={499--512},
   year={2017},
-  organization={ACM}
+  organization={ACM},
+  address={Belgrade, Serbia}
 }
 ```
 
@@ -375,7 +488,8 @@ URCS.
   number={OOPSLA},
   pages={153},
   year={2018},
-  publisher={ACM}
+  publisher={ACM},
+  address={Boston, MA, USA}
 }
 ```
 
@@ -409,7 +523,7 @@ URCS.
  booktitle = {Proceedings of the Sixteenth International Conference on Architectural Support for Programming Languages and Operating Systems},
  series = {ASPLOS XVI},
  year = {2011},
- location = {Newport Beach, California, USA},
+ address = {Newport Beach, California, USA},
  pages = {105--118},
  numpages = {14},
  doi = {10.1145/1950365.1950380},
@@ -424,7 +538,8 @@ URCS.
   booktitle={Proceedings of the Twelfth European Conference on Computer Systems},
   pages={468--482},
   year={2017},
-  organization={ACM}
+  organization={ACM},
+  address={Belgrade, Serbia}
 }
 ```
 
@@ -439,12 +554,8 @@ URCS.
  number = {5},
  month = jan,
  year = {2015},
- issn = {2150-8097},
  pages = {497--508},
  numpages = {12},
- url = {http://dx.doi.org/10.14778/2735479.2735483},
- doi = {10.14778/2735479.2735483},
- acmid = {2735483},
  publisher = {VLDB Endowment},
 }
 ```
@@ -457,7 +568,8 @@ URCS.
   booktitle={Proceedings of the ACM 2000 conference on Java Grande},
   pages={160--167},
   year={2000},
-  organization={Citeseer}
+  organization={Citeseer},
+  address={San Francisco, California, USA}
 }
 ```
 
@@ -469,7 +581,8 @@ URCS.
   booktitle={International Workshop on Mobile Object Systems},
   pages={111--130},
   year={1996},
-  organization={Springer}
+  organization={Springer},
+  address={Linz, Austria}
 }
 ```
 
@@ -502,7 +615,8 @@ URCS.
  booktitle = {Proceedings of the 23rd ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
  year = {2018},
  pages = {28--40},
- numpages = {13}
+ numpages = {13},
+ address = {Vienna, Austria}
 } 
 ```
 
@@ -530,7 +644,7 @@ URCS.
  articleno = {128},
  numpages = {26},
  publisher = {ACM},
- address = {New York, NY, USA},
+ address = {Athens, Greece},
 }
 ```
 
@@ -548,11 +662,12 @@ URCS.
 
 ### NVMOVE:
 ```bibtex
-@inproceedings{chauhan2016nvmove,
-  title={$\{$NVMOVE$\}$: Helping Programmers Move to Byte-Based Persistence},
+@inproceedings{chauhan-inflow-2016,
+  title={NVMOVE: Helping Programmers Move to Byte-Based Persistence},
   author={Chauhan, Himanshu and Calciu, Irina and Chidambaram, Vijay and Schkufza, Eric and Mutlu, Onur and Subrahmanyam, Pratap},
-  booktitle={4th Workshop on Interactions of NVM/Flash with Operating Systems and Workloads ($\{$INFLOW$\}$ 16)},
-  year={2016}
+  booktitle={4th Workshop on Interactions of NVM/Flash with Operating Systems and Workloads (INFLOW 16)},
+  year={2016},
+  address={Savannah, GA, USA}
 }
 ```
 
@@ -564,7 +679,8 @@ URCS.
   booktitle={2018 IEEE 36th International Conference on Computer Design (ICCD)},
   pages={413--422},
   year={2018},
-  organization={IEEE}
+  organization={IEEE},
+  address={Orlando, Florida, USA}
 }
 ```
 
@@ -578,11 +694,10 @@ URCS.
  booktitle = {Proceedings of the Twenty-Third International Conference on Architectural Support for Programming Languages and Operating Systems},
  series = {ASPLOS '18},
  year = {2018},
- location = {Williamsburg, VA, USA},
+ address = {Williamsburg, VA, USA},
  pages = {70--83},
  numpages = {14},
  publisher = {ACM},
- address = {New York, NY, USA},
 } 
 ```
 
@@ -594,7 +709,8 @@ URCS.
   booktitle={2018 IEEE 24th International Conference on Parallel and Distributed Systems (ICPADS)},
   pages={457--464},
   year={2018},
-  organization={IEEE}
+  organization={IEEE},
+  address={Sentosa, Singapore}
 }
 ```
 
@@ -605,11 +721,12 @@ URCS.
 ### NOVA file system
 ```bibtex
 @inproceedings{xu-fast-2016,
-  title={$\{$NOVA$\}$: A Log-structured File System for Hybrid Volatile/Non-volatile Main Memories},
+  title={NOVA: A Log-structured File System for Hybrid Volatile/Non-volatile Main Memories},
   author={Xu, Jian and Swanson, Steven},
-  booktitle={14th $\{$USENIX$\}$ Conference on File and Storage Technologies ($\{$FAST$\}$ 16)},
+  booktitle={14th USENIX Conference on File and Storage Technologies (FAST 16)},
   pages={323--338},
-  year={2016}
+  year={2016},
+  address={Santa Clara, CA}
 }
 ```
 
@@ -621,7 +738,8 @@ URCS.
   booktitle={Proceedings of the 26th Symposium on Operating Systems Principles},
   pages={478--496},
   year={2017},
-  organization={ACM}
+  organization={ACM},
+  address={Shanghai, China}
 }
 ```
 
@@ -635,7 +753,8 @@ URCS.
   booktitle={2012 Second International Conference on Digital Information and Communication Technology and it's Applications (DICTAP)},
   pages={177--182},
   year={2012},
-  organization={IEEE}
+  organization={IEEE},
+  address={Bangkok, Thailand}
 }
 ```
 
@@ -646,7 +765,8 @@ URCS.
   booktitle={Proceedings of the 6th international conference on ubiquitous information management and communication},
   pages={48},
   year={2012},
-  organization={ACM}
+  organization={ACM},
+  address={Kuala Lumpur, Malaysia}
 }
 
 ### XML-based object serialization
@@ -658,7 +778,8 @@ URCS.
   author={Van Engelen, Robert and Zhang, Wei and Govindaraju, Madhusudhan},
   journal={in the proceedings of Compilers for Parallel Computing (CPC)},
   pages={441--455},
-  year={2006}
+  year={2006},
+  address={New Orleans, Louisiana, USA}
 }
 ```
 
@@ -670,7 +791,7 @@ URCS.
  booktitle = {Proceedings of the 2007 Workshop on Service-oriented Computing Performance: Aspects, Issues, and Approaches},
  series = {SOCP '07},
  year = {2007},
- location = {Monterey, California, USA},
+ address = {Monterey, California, USA},
  pages = {23--30},
  numpages = {8},
  publisher = {ACM},
@@ -693,6 +814,18 @@ URCS.
 }
 ```
 
+### Java object serialization (built-in)
+```bibtex
+@inproceedings{opyrchal-workshop-1999,
+  title={Efficient object serialization in Java},
+  author={Opyrchal, Lukasz and Prakash, Atul},
+  booktitle={Proceedings. 19th IEEE International Conference on Distributed Computing Systems. Workshops on Electronic Commerce and Web-based Applications. Middleware},
+  pages={96--101},
+  year={1999},
+  organization={IEEE}
+}
+```
+
 ### Java thread serialization
 ```bibtex
 @inproceedings{bouchenak-aiccsa-2003,
@@ -701,7 +834,22 @@ URCS.
   booktitle={ACS/IEEE International Conference on Computer Systems and Applications (AICCSA’03)},
   pages={14--18},
   year={2003},
-  organization={Citeseer}
+  organization={Citeseer},
+  address={Tunis, Tunisia}
+}
+```
+
+### Python pickling in MPI
+```bibtex
+@article{dalcin-journal-2008,
+  title={MPI for Python: Performance improvements and MPI-2 extensions},
+  author={Dalc{\'\i}n, Lisandro and Paz, Rodrigo and Storti, Mario and D’El{\'\i}a, Jorge},
+  journal={Journal of Parallel and Distributed Computing},
+  volume={68},
+  number={5},
+  pages={655--662},
+  year={2008},
+  publisher={Elsevier}
 }
 ```
 
@@ -715,7 +863,7 @@ URCS.
  booktitle = {Proceedings of the 2013 ACM SIGPLAN International Conference on Object Oriented Programming Systems Languages \&\#38; Applications},
  series = {OOPSLA '13},
  year = {2013},
- location = {Indianapolis, Indiana, USA},
+ address = {Indianapolis, Indiana, USA},
  pages = {183--202},
  numpages = {20},
  publisher = {ACM},
@@ -752,10 +900,11 @@ URCS.
 @inproceedings{yallop-ml-2007,
   title={Practical generic programming in OCaml},
   author={Yallop, Jeremy},
-  booktitle={Proceedings of the 2007 workshop on Workshop on ML},
+  booktitle={Proceedings of the 2007 Workshop on ML},
   pages={83--94},
   year={2007},
-  organization={ACM}
+  organization={ACM},
+  location={Freiburg, Germany}
 }
 ```
 ### static meta programming
@@ -768,9 +917,6 @@ URCS.
 }
 ```
 
-
-
-\\
 ### SOAP
 ```bibtex
 @misc{w3c-soap,
@@ -779,6 +925,140 @@ URCS.
   note={www.w3c.org}
 }
 ``` 
+
+### WSDL
+```bibtex
+@misc{christensen-wsdl-2001,
+  title={Web services description language (WSDL) 1.1},
+  author={Christensen, Erik and Curbera, Francisco and Meredith, Greg and Weerawarana, Sanjiva and others},
+  year={2001},
+  publisher={Citeseer}
+}
+```
+
+## IDL:
+
+### Corba IDL
+```bibtex
+@article{sivaprasad-1995,
+  title={Larch/CORBA: Specifying the behavior of CORBA-IDL interfaces},
+  author={Sivaprasad, Sankar Gowri},
+  year={1995}
+}
+```
+
+### Corba object computing
+```bibtex
+@article{vinoski-1993,
+  title={Distributed object computing with CORBA},
+  author={Vinoski, Steve},
+  journal={C++ Report},
+  volume={5},
+  number={6},
+  pages={32--38},
+  year={1993}
+}
+```
+
+### Extension of IDL for testing
+```bibtex
+@inproceedings{sankar-idl-1994,
+ author = {Sankar, Sriram and Hayes, Roger},
+ title = {ADL\&Mdash;an Interface Definition Language for Specifying and Testing Software},
+ booktitle = {Proceedings of the Workshop on Interface Definition Languages},
+ series = {IDL '94},
+ year = {1994},
+ address = {Portland, Oregon, USA},
+ pages = {13--21},
+ numpages = {9},
+ publisher = {ACM},
+} 
+```
+
+### Protocol specifications
+```bibtex
+@article{yellin-toplas-1997,
+  title={Protocol specifications and component adaptors},
+  author={Yellin, Daniel M and Strom, Robert E},
+  journal={ACM Transactions on Programming Languages and Systems (TOPLAS)},
+  volume={19},
+  number={2},
+  pages={292--333},
+  year={1997},
+  publisher={ACM}
+}
+```
+
+### Extending CORBA with protocols
+```bibtex
+@article{canal-journal-2001,
+  title={Extending CORBA interfaces with protocols},
+  author={Canal, Carlos and Fuentes, Lidia and Pimentel, Ernesto and Troya, Jos{\'e} M and Vallecillo, Antonio},
+  journal={The Computer Journal},
+  volume={44},
+  number={5},
+  pages={448--462},
+  year={2001},
+  publisher={Oxford University Press}
+}
+```
+
+### Adding semantics to IDL
+```bibtex
+@inproceedings{watkins-1998,
+  title={Adding semantics to interface definition languages},
+  author={Watkins, Damien and Thompson, Dean},
+  booktitle={Proceedings 1998 Australian Software Engineering Conference (Cat. No. 98EX233)},
+  pages={66--78},
+  year={1998},
+  organization={IEEE},
+  addresss={Adelaide, Australia}
+}
+```
+
+### Path Expressions
+```bibtex
+@inproceedings{watkins-tools-1998,
+  title={Using interface definition languages to support path expressions and programming by contract},
+  author={Watkins, Damien},
+  booktitle={Proceedings. Technology of Object-Oriented Languages. TOOLS 26 (Cat. No. 98EX176)},
+  pages={308--317},
+  year={1998},
+  organization={IEEE}
+}
+```
+
+## .Net:
+
+### .Net in general
+```bibtex
+@article{meyer-journal-2001,
+  title={. NET is coming [Microsoft Web services platform]},
+  author={Meyer, Bertrand},
+  journal={Computer},
+  volume={34},
+  number={8},
+  pages={92--97},
+  year={2001},
+  publisher={IEEE},
+  address={Melbourne, Australia}
+}
+```
+
+### .Net CLR
+```bibtex
+@inproceedings{kennedy-pldi-2001,
+ author = {Kennedy, Andrew and Syme, Don},
+ title = {Design and Implementation of Generics for the .NET Common Language Runtime},
+ booktitle = {Proceedings of the ACM SIGPLAN 2001 Conference on Programming Language Design and Implementation},
+ series = {PLDI '01},
+ year = {2001},
+ address = {Snowbird, Utah, USA},
+ pages = {1--12},
+ numpages = {12},
+ publisher = {ACM},
+} 
+```
 
 ## Utils:
 
@@ -790,7 +1070,7 @@ URCS.
  booktitle = {Proceedings of the Twenty-Second International Conference on Architectural Support for Programming Languages and Operating Systems},
  series = {ASPLOS '17},
  year = {2017},
- location = {Xi'an, China},
+ address = {Xi'an, China},
  pages = {91--104},
  numpages = {14},
  publisher = {ACM},
@@ -833,9 +1113,11 @@ URCS.
   booktitle={International Workshop on Languages, Compilers, and Run-Time Systems for Scalable Computers},
   pages={207--220},
   year={2000},
-  organization={Springer}
+  organization={Springer},
+  address={Rochester, NY, USA}
 }
 ```
+
 
 
 # NVM driving applications & in-memory databases:
@@ -862,7 +1144,7 @@ URCS.
  booktitle = {Proceedings of the Thirteenth EuroSys Conference},
  series = {EuroSys '18},
  year = {2018},
- location = {Porto, Portugal},
+ address = {Porto, Portugal},
  pages = {42:1--42:13},
  numpages = {13},
  publisher = {ACM},
@@ -885,15 +1167,35 @@ URCS.
 }
 ```
 
+# Other papers about NVM/persistency
+
+### whole-system persistence:
+```bibtex
+@inproceedings{narayanan-asplos-2012,
+ author = {Narayanan, Dushyanth and Hodson, Orion},
+ title = {Whole-system Persistence},
+ booktitle = {Proceedings of the Seventeenth International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS XVII},
+ year = {2012},
+ address = {London, England, UK},
+ pages = {401--410},
+ numpages = {10},
+ publisher = {ACM},
+} 
+```
+
 # Protected Libraries:
 
 ### Hodor (*)
 ```bibtex
 @inproceedings{hedayati-atc-2019,
-  title={Hodor: Intra-Process Isolation for High-Throughput Data Plane Libraries},
-  author={Hedayati, Mohammad and Gravani, Spyridoula and Johnson, Ethan and Criswell, John and Scott, Michael L and Shen, Kai and Marty, Mike},
-  booktitle={2019 $\{$USENIX$\}$ Annual Technical Conference ($\{$USENIX$\}$$\{$ATC$\}$ 19)},
-  year={2019}
+  author = {Mohammad Hedayati and Spyridoula Gravani and Ethan Johnson and John Criswell and Michael L. Scott and Kai Shen and Mike Marty},
+  title = {Hodor: Intra-Process Isolation for High-Throughput Data Plane Libraries},
+  booktitle = {2019 USENIX Annual Technical Conference (ATC' 19)},
+  year = {2019},
+  address = {Renton, WA},
+  pages = {489--504},
+  publisher = {USENIX Association}
 }
 ```
 
@@ -916,7 +1218,8 @@ URCS.
   volume={38},
   number={4},
   pages={44--47},
-  year={2013}
+  year={2013},
+  address={Broomfield, CO, USA}
 }
 ```
 ### ZygOS
@@ -927,7 +1230,8 @@ URCS.
   booktitle={Proceedings of the 26th Symposium on Operating Systems Principles},
   pages={325--341},
   year={2017},
-  organization={ACM}
+  organization={ACM},
+  address={Shanghai, China}
 }
 ```
 
@@ -939,7 +1243,269 @@ URCS.
   booktitle={Proceedings of the Workshop on Hot Topics in Operating Systems},
   pages={73--80},
   year={2019},
-  organization={ACM}
+  organization={ACM},
+  address={Bertinoro, Italy}
+}
+```
+
+
+# IBR-related works 
+(to be put in a seperate file)
+
+### IBR (*)
+```bibtex
+@inproceedings{wen-ppopp-2018,
+ author = {Wen, Haosen and Izraelevitz, Joseph and Cai, Wentao and Beadle, H. Alan and Scott, Michael L.},
+ title = {Interval-based Memory Reclamation},
+ booktitle = {Proceedings of the 23rd ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
+ series = {PPoPP '18},
+ year = {2018},
+ address = {Vienna, Austria},
+ pages = {1--13},
+ numpages = {13},
+ publisher = {ACM},
+} 
+```
+
+### epoch-based reclamation
+```bibtex
+@article{hart-jpdc-2007,
+  author =        {Hart, Thomas E. and McKenney, Paul E. and
+                   Brown, Angela Demke and Walpole, Jonathan},
+  journal =       {Journal of {Parallel} and {Distributed} {Computing}},
+  month =         dec,
+  number =        {12},
+  pages =         {1270--1285},
+  publisher =     {Academic Press, Inc.},
+  title =         {Performance of Memory Reclamation for Lockless
+                   Synchronization},
+  volume =        {67},
+  year =          {2007},
+}
+```
+
+```bibtex
+@phdthesis{fraser-thesis-2004,
+  author =        {Fraser, Keir},
+  note =          {No. UCAM-CL-TR-579},
+  school =        {Computer Laboratory, University of Cambridge},
+  title =         {Practical lock-freedom},
+  year =          {2004},
+  month =         feb,
+}
+```
+
+### robustness
+```bibtex
+@inproceedings{dice-ismm-2016,
+  author =        {Dice, Dave and Herlihy, Maurice and Kogan, Alex},
+  booktitle =     {Proc. of the 2016 ACM SIGPLAN Intl.
+                   Symp. on Memory Management},
+  address =       {Santa Barbara, CA, USA},
+  pages =         {36--45},
+  series =        {ISMM '16},
+  title =         {Fast Non-intrusive Memory Reclamation for
+                   Highly-concurrent Data Structures},
+  year =          {2016},
+  month =         jun,
+}
+```
+
+### hazard pointers
+```bibtex
+@article{michael-tpds-2004,
+  author =        {Maged M. Michael},
+  journal =       {IEEE Trans. on Parallel and Distributed Systems},
+  month =         aug,
+  number =        {8},
+  pages =         {491-504},
+  title =         {Hazard Pointers: Safe Memory Reclamation for
+                   Lock-Free Objects},
+  volume =        {15},
+  year =          {2004},
+}
+```
+
+```bibtex
+@article{herlihy-tocs-2005,
+  author =        {Herlihy, Maurice and Luchangco, Victor and
+                   Martin, Paul and Moir, Mark},
+  journal =       {ACM Trans. on Computer Systems},
+  month =         may,
+  number =        {2},
+  pages =         {146--196},
+  title =         {Nonblocking Memory Management Support for
+                   Dynamic-sized Data Structures},
+  volume =        {23},
+  year =          {2005},
+}
+```
+
+### Hazard Eras
+```bibtex
+@inproceedings{ramalhete-spaa-2017,
+  author =        {Ramalhete, Pedro and Correia, Andreia},
+  booktitle =     {Proc. of the 29th ACM Symp. on Parallelism
+                   in Algorithms and Architectures},
+  address =       {Washington, DC, USA},
+  pages =         {367--369},
+  series =        {SPAA '17},
+  title =         {Brief Announcement: Hazard Eras - Non-Blocking Memory
+                   Reclamation},
+  year =          {2017},
+  month =         jul,
+}
+```
+
+
+### QSense
+```bibtex
+@inproceedings{balmau-spaa-2016,
+  author =        {Balmau, Oana and Guerraoui, Rachid and
+                   Herlihy, Maurice and Zablotchi, Igor},
+  booktitle =     {Proc. of the 28th ACM Symp. on Parallelism
+                   in Algorithms and Architectures},
+  address =       {Pacific Grove, CA, USA},
+  pages =         {349--359},
+  series =        {SPAA '16},
+  title =         {Fast and Robust Memory Reclamation for Concurrent
+                   Data Structures},
+  year =          {2016},
+  month =         jul,
+}
+```
+
+### history-preserving persistency
+```bibtex
+@inproceedings{driscoll-stoc-1986,
+  author =        {Driscoll, James R. and Sarnak, Neil and Sleator, Daniel D. and
+                   Tarjan, Robert E.},
+  booktitle =     {Proc. of the 18th Ann. ACM Symp. on Theory of Computing},
+  address =       {Berkeley, CA, USA},
+  pages =         {109--121},
+  series =        {STOC '86},
+  title =         {Making Data Structures Persistent},
+  year =          {1986},
+  month =         may,
+}
+```
+
+### treiber stack
+```bibtex
+@techreport{treiber-tr-1986,
+  author =        {R. Kent Treiber},
+  institution =   {IBM Almaden Research Center},
+  month =         apr,
+  number =        {RJ 5118},
+  title =         {Systems Programming: Coping with Parallelism},
+  year =          {1986},
+}
+```
+
+### Universal concurrency construction
+```bibtex
+@article{herlihy-toplas-1993,
+  author =        {Herlihy, Maurice},
+  journal =       {ACM Trans. on Programming Languages and Systems},
+  month =         nov,
+  number =        {5},
+  pages =         {745--770},
+  title =         {A Methodology for Implementing Highly Concurrent Data
+                   Objects},
+  volume =        {15},
+  year =          {1993},
+}
+```
+
+### Functional data structures
+```bibtex
+@book{okasaki-book-1999,
+  author =        {Okasaki, Chris},
+  publisher =     {Cambridge University Press},
+  title =         {Purely functional data structures},
+  year =          {1999},
+  month =         jun,
+}
+```
+
+### Harris ordered list
+```bibtex
+@inproceedings{harris-disc-2001,
+ author = {Harris, Timothy L.},
+ title = {A Pragmatic Implementation of Non-blocking Linked-Lists},
+ booktitle = {Proceedings of the 15th International Conference on Distributed Computing},
+ series = {DISC '01},
+ year = {2001},
+ isbn = {3-540-42605-1},
+ pages = {300--314},
+ numpages = {15},
+ url = {http://dl.acm.org.ezp.lib.rochester.edu/citation.cfm?id=645958.676105},
+ acmid = {676105},
+ publisher = {Springer-Verlag},
+ address = {Lisbon, Portugal},
+	annote	= {
+Introduction of the mark and remove method for concurrent queues.
+	}
+} 
+```
+
+### Michael's hash map
+```bibtex
+@inproceedings{michael-podc-1996,
+ author = {Michael, Maged M. and Scott, Michael L.},
+ title = {Simple, Fast, and Practical Non-blocking and Blocking Concurrent Queue Algorithms},
+ booktitle = {Proceedings of the 1996 ACM Symposium on Principles of Distributed Computing},
+ series = {PODC '96},
+ year = {1996},
+ address = {Philadelphia, Pennsylvania, USA},
+ pages = {267--275},
+ numpages = {9},
+ publisher = {ACM},
+	annote ={
+The classic M and S (M&S) queue.
+	}
+} 
+```
+
+### Natarajan-Mittal's tree
+```bibtex
+@inproceedings{natarajan-ppopp-2014,
+ author = {Natarajan, Aravind and Mittal, Neeraj},
+ title = {Fast Concurrent Lock-free Binary Search Trees},
+ booktitle = {Proceedings of the 19th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
+ series = {PPoPP '14},
+ year = {2014},
+ address = {Orlando, Florida, USA},
+ pages = {317--328},
+ numpages = {12},
+ publisher = {ACM},
+} 
+```
+
+### Bonsai Tree
+```bibtex
+@inproceedings{clements-asplos-2012,
+ author = {Clements, Austin T. and Kaashoek, M. Frans and Zeldovich, Nickolai},
+ title = {Scalable Address Spaces Using RCU Balanced Trees},
+ booktitle = {Proceedings of the Seventeenth International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS XVII},
+ year = {2012},
+ address = {London, England, UK},
+ pages = {199--210},
+ numpages = {12},
+ publisher = {ACM},
+ keywords = {RCU, concurrent balanced trees, lock-free algorithms, multicore, scalability, virtual memory},
+} 
+```
+
+### Jemalloc
+```bibtex
+@inproceedings{evans-bsdcan-2006,
+  title={A scalable concurrent malloc (3) implementation for FreeBSD},
+  author={Evans, Jason},
+  booktitle={Proceedings of the BSDCan Conference},
+  year={2006},
+	address = {Ottowa, Canada}
 }
 ```
 
