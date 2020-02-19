@@ -157,6 +157,36 @@ URCS.
 ## Lock-based systems:
 
 ### Atlas
+* Failure & restart model:
+  * persistent region with persistent root(s)
+  * data is persistent if it's visible to _restart code_
+* Sequenced before, synchronized with and happens-before
+* FASE:
+  * memory operations are sequenced and consecutive
+  * a lock is held during FASE
+  * immediately before/after the first/last memory operation of a FASE, no lock
+    is held
+* Durability order
+  * $f_1 \leq_d f_2$ if $\exists$ unlock operation $X\in f_1$ and lock operation
+    $Y \in f_2$ where $X <_{hb} Y$
+  * if $f_1 \leq_d f_2$, $f_2$ is durable $\Rightarrow$ $f_1$ is durable.
+  * individual stores before a FASE are durable only if this FASE is durable.
+* Implementation details:
+  * instrumented stores attach new store logs to the end of the log for each
+    thread
+  * the helper thread grabs log entries from the top of each thread, find out
+    finished FASEs, build the durability order graph and remove both unfinished
+    FASEs and FASEs depending on those unfinished FASEs. Then for each FASE in
+    the graph, remove the corresponding entries from the log.
+* Optimizations:
+  * Log elision: some stores outside of FASE need not to be undone.
+  * Do not issue flushes after _every_ store.
+  * Leverage the log insert/prune pattern and use circular-buffer-based memory
+    allocation
+  * Try to combine flushes of log entries in the same cache line
+* Minor issues:
+  * requirement 1: shouldn't `ready` be persistent?
+  * What's actually happening about log elision?
 ```bibtex
 @inproceedings{chakrabarti-oopsla-2014,
  author = {Chakrabarti, Dhruva R. and Boehm, Hans-J. and Bhandari, Kumud},
@@ -172,6 +202,10 @@ URCS.
 ```
 
 ### JustDo (*)
+* key idea: keep log of every persistent stores before it in every FASE. Upon crash, continue from the store to the end.
+  * Assumption: caches are non-volatile
+  * details:
+    * lock intension logs to mark the necessity of recovering locks
 ```bibtex
 @inproceedings{izraelevitz-asplos-2014,
  author = {Izraelevitz, Joseph and Kelly, Terence and Kolli, Aasheesh},
@@ -536,6 +570,31 @@ URCS.
 ```
 
 ### NV-Heaps:
+* A compresensive object-based NVM programming system including strong typing,
+  reference-counting-based automatic memory management, undo-logging based ACID
+  transactions.
+* Details:
+  * Requirements: mmap() function provided by the file system, and epoch
+    barriers which waits all previous writs to be flushed to persistent memory.
+  * Allocator:
+    * failure atomicity: uses non-volatile redo-log based operation descriptors,
+      one per kind of operation (allocation, delete, ...) for each thread.
+    * concurrency: one lock per reference counter on each object; use generation
+      lock to unlock all locks in the previous era.
+    * allocation: per-thread free lists and global free lists
+    * deallocation: for recursive deallocation caused by reduced reference
+      counters, use "root deletion" and "non-root deletion" descriptors to mark
+      the beginning and end of the chain. On recovery, start with the end
+      (non-root) of the chain and begin again with the beginning (root).
+    * caveat: destruction may be called twice on recovery.
+  * Pointers:
+    * NV-to-NV: "strong" pointers count as reference counts; "weak" ones don't
+      to avoid memory leaks. "Weak" pointers need to be set null when the target
+      is retired, implemented with proxy nodes.
+    * V-to-NV: add a second non-volatile V-to-VN reference counter into each
+      object so those pointers can also keep the objects alive.
+  * Transactions:
+    * undo logging that copies the whole (original) object upon opening for write
 ```bibtex
 @inproceedings{coburn-asplos-2011,
  author = {Coburn, Joel and Caulfield, Adrian M. and Akel, Ameen and Grupp, Laura M. and Gupta, Rajesh K. and Jhala, Ranjit and Swanson, Steven},
@@ -551,6 +610,21 @@ URCS.
 ```
 
 ### NVThreads
+* Details:
+  * Transforming threads to processes to have per-thread private logs.
+  * Durability point: when the _logs_ are flushed, rather than the actual data
+    is merged.
+  * Stores to NVM are recorded in the per-thread copy-on-write page diffs as
+    redo logs before (which requires a fence) they are written back to the
+    actual shared data
+  * Log truncation need stop-the-world quiescence, where all cache entries
+    affected by to-be-truncated dirty pages will be flushed.
+* Advantage over Atlas:
+  * Got rid of compiler support
+  * better support for condition variables for wait and signal calls (without
+    replacing them with locks)
+  * simpler recovery: single `bool crashed()` call versus iterating through each
+    persistent region.
 ```bibtex
 @inproceedings{hsu-eurosys-2017,
   title={NVthreads: Practical persistence for multi-threaded applications},
