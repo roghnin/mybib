@@ -30,10 +30,10 @@ URCS.
   organization={Springer},
   address={Paris, France}
 }
-```location
+​```location
 
 ### Nesting-safe recoverable linearizability:
-```bibtex
+​```bibtex
 @inproceedings{attiya-podc-2018,
   title={Nesting-safe recoverable linearizability: Modular constructions for non-volatile memory},
   author={Attiya, Hagit and Ben-Baruch, Ohad and Hendler, Danny},
@@ -423,7 +423,8 @@ URCS.
  pages = {329--343},
  numpages = {15},
  publisher = {ACM},
-} 
+}
+```
 
 ## Others & Utils:
 
@@ -742,6 +743,22 @@ URCS.
 }
 ```
 
+### Log-free persistent data structures
+```bibtex
+@inproceedings {david-atc-2018,
+author = {Tudor David and Aleksandar Dragojevi{\'c} and Rachid Guerraoui and Igor Zablotchi},
+title = {Log-Free Concurrent Data Structures},
+booktitle = {2018 {USENIX} Annual Technical Conference ({USENIX} {ATC} 18)},
+year = {2018},
+isbn = {978-1-939133-01-4},
+address = {Boston, MA},
+pages = {373--386},
+url = {https://www.usenix.org/conference/atc18/presentation/david},
+publisher = {{USENIX} Association},
+month = jul,
+}
+```
+
 ### persistent data structures
 ```bibtex
 @article{mahapatra-2019,
@@ -751,6 +768,49 @@ URCS.
   year={2019}
 }
 ```
+
+### Pronto: Easy and Fast Persistence for Volatile Data Structures
+WARNING: page number and page count to be added
+
+This paper shares (almost exactly) the key idea of our proposed durable data
+structure: keeping the abstraction persistent but the data structure transient.
+They did so by leveraging the fact that for each operation, the updates to the
+abstraction lies completely in operation _arguments_: one only need to log the
+arguments of each operation in order to rebuild (at least parts of) the data
+structure. The log is called asynchronous semantic log (ASL) To avoid having an
+infinitively long log of arguments, they bundled a new thread to each existing
+thread to take periodic snapshots of their online (transient) image, an only
+replay the ASL since the last snapshot after crashes.
+
+```bibtex
+@inproceedings{memaripour-asplos-2020,
+ author = {Memaripour, Amirsaman and Izraelevitz, Joseph and Swanson, Steven},
+ title = {Pronto: Easy and Fast Persistence for Volatile Data Structures},
+ booktitle = {Proceedings of the Twenty-Fifth International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS '20},
+ year = {2020},
+ address = {Lausanne, Switzerland},
+ publisher = {ACM},
+} 
+```
+
+### MOD: Minimally ordered durable data structures
+
+```bibtex
+@inproceedings{haria-asplos-2020,
+    author = {Haria, Swapnil and Hill, Mark D. and Swift, Michael M.},
+    title = {MOD: Minimally Ordered Durable Datastructures for Persistent Memory},
+    year = {2020},
+    booktitle = {Proceedings of the Twenty-Fifth International Conference on Architectural Support for Programming Languages and Operating Systems},
+    pages = {775–788},
+    numpages = {14},
+    keywords = {persistent memory., durability, crash-consistency, datastructures},
+    address = {Lausanne, Switzerland},
+	series = {ASPLOS ’20}
+}
+```
+
+
 
 ## Porting existing code
 
@@ -812,7 +872,35 @@ URCS.
 
 ## File systems:
 
+### BPFS
+
+* assumption: only 8iB words can be written to the NVM atomically
+* keeping multiple "epochs" on-the-fly, since flushing to NVM goes all the way to the capacitor on NVM, which is expensive
+
+```bibtex
+@inproceedings{10.1145/1629575.1629589,
+    author = {Condit, Jeremy and Nightingale, Edmund B. and Frost, Christopher and Ipek, Engin and Lee, Benjamin and Burger, Doug and Coetzee, Derrick},
+    title = {Better I/O through Byte-Addressable, Persistent Memory},
+    year = {2009},
+    isbn = {9781605587523},
+    publisher = {Association for Computing Machinery},
+    url = {https://doi.org/10.1145/1629575.1629589},
+    doi = {10.1145/1629575.1629589},
+    booktitle = {Proceedings of the ACM SIGOPS 22nd Symposium on Operating Systems Principles},
+    pages = {133–146},
+    numpages = {14},
+    keywords = {phase change memory, file systems, performance},
+    address = {Big Sky, Montana, USA},
+    series = {SOSP ’09}
+}
+  
+
+```
+
+
+
 ### NOVA file system
+
 ```bibtex
 @inproceedings{xu-fast-2016,
   title={NOVA: A Log-structured File System for Hybrid Volatile/Non-volatile Main Memories},
@@ -853,6 +941,7 @@ URCS.
 ```
 
 ### Performance survey of serialization libraries on Android JVM
+```bibtex
 @inproceedings{sumaray-icuimc-2012,
   title={A comparison of data serialization formats for optimal efficiency on a mobile platform},
   author={Sumaray, Audie and Makki, S Kami},
@@ -862,6 +951,7 @@ URCS.
   organization={ACM},
   address={Kuala Lumpur, Malaysia}
 }
+```
 
 ### XML-based object serialization
 * key idea: use compiler support to automatically generate serialization
@@ -1018,7 +1108,7 @@ URCS.
   author={W3C},
   note={www.w3c.org}
 }
-``` 
+```
 
 ### WSDL
 ```bibtex
