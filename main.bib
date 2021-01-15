@@ -1277,6 +1277,13 @@ replay the ASL since the last snapshot after crashes.
 ## Data interchange files
 
 ### Mison: A Fast JSON Parser for Data Analytics
+* Basic idea: push down both projections and filters into the parser
+  * Observations:
+    * some applications query only a (small) part of the fields
+    * records tend to have similar logical structure
+  * Approach:
+    * using a small portion of data as training set, Mison speculatively predicts the _logical locations_ of queried field
+    * during parsing, Mison builds the _structural locations_ of each field and map it with logical locations.
 ```bibtex
 @article{li-vldb-2017,
   title={Mison: a fast JSON parser for data analytics},
@@ -1291,6 +1298,9 @@ replay the ASL since the last snapshot after crashes.
 ```
 
 ### Filter before you parse: Faster analytics on raw data with sparser
+* Basic idea: raw filtering. Filter data before parsing
+  * Before parsing is done, do pattern matching on raw data to decide whether to continue parsing.
+  * Some optimizations on lowering false positive rate.
 ```bibtex
 @article{palkar-vldb-2018,
   title={Filter before you parse: Faster analytics on raw data with sparser},
@@ -1482,268 +1492,6 @@ replay the ASL since the last snapshot after crashes.
   address={Bertinoro, Italy}
 }
 ```
-
-
-# IBR-related works 
-(to be put in a seperate file)
-
-### IBR (*)
-```bibtex
-@inproceedings{wen-ppopp-2018,
- author = {Wen, Haosen and Izraelevitz, Joseph and Cai, Wentao and Beadle, H. Alan and Scott, Michael L.},
- title = {Interval-based Memory Reclamation},
- booktitle = {Proceedings of the 23rd ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
- series = {PPoPP '18},
- year = {2018},
- address = {Vienna, Austria},
- pages = {1--13},
- numpages = {13},
- publisher = {ACM},
-} 
-```
-
-### epoch-based reclamation
-```bibtex
-@article{hart-jpdc-2007,
-  author =        {Hart, Thomas E. and McKenney, Paul E. and
-                   Brown, Angela Demke and Walpole, Jonathan},
-  journal =       {Journal of {Parallel} and {Distributed} {Computing}},
-  month =         dec,
-  number =        {12},
-  pages =         {1270--1285},
-  publisher =     {Academic Press, Inc.},
-  title =         {Performance of Memory Reclamation for Lockless
-                   Synchronization},
-  volume =        {67},
-  year =          {2007},
-}
-```
-
-```bibtex
-@phdthesis{fraser-thesis-2004,
-  author =        {Fraser, Keir},
-  note =          {No. UCAM-CL-TR-579},
-  school =        {Computer Laboratory, University of Cambridge},
-  title =         {Practical lock-freedom},
-  year =          {2004},
-  month =         feb,
-}
-```
-
-### robustness
-```bibtex
-@inproceedings{dice-ismm-2016,
-  author =        {Dice, Dave and Herlihy, Maurice and Kogan, Alex},
-  booktitle =     {Proc. of the 2016 ACM SIGPLAN Intl.
-                   Symp. on Memory Management},
-  address =       {Santa Barbara, CA, USA},
-  pages =         {36--45},
-  series =        {ISMM '16},
-  title =         {Fast Non-intrusive Memory Reclamation for
-                   Highly-concurrent Data Structures},
-  year =          {2016},
-  month =         jun,
-}
-```
-
-### hazard pointers
-```bibtex
-@article{michael-tpds-2004,
-  author =        {Maged M. Michael},
-  journal =       {IEEE Trans. on Parallel and Distributed Systems},
-  month =         aug,
-  number =        {8},
-  pages =         {491-504},
-  title =         {Hazard Pointers: Safe Memory Reclamation for
-                   Lock-Free Objects},
-  volume =        {15},
-  year =          {2004},
-}
-```
-
-```bibtex
-@article{herlihy-tocs-2005,
-  author =        {Herlihy, Maurice and Luchangco, Victor and
-                   Martin, Paul and Moir, Mark},
-  journal =       {ACM Trans. on Computer Systems},
-  month =         may,
-  number =        {2},
-  pages =         {146--196},
-  title =         {Nonblocking Memory Management Support for
-                   Dynamic-sized Data Structures},
-  volume =        {23},
-  year =          {2005},
-}
-```
-
-### Hazard Eras
-```bibtex
-@inproceedings{ramalhete-spaa-2017,
-  author =        {Ramalhete, Pedro and Correia, Andreia},
-  booktitle =     {Proc. of the 29th ACM Symp. on Parallelism
-                   in Algorithms and Architectures},
-  address =       {Washington, DC, USA},
-  pages =         {367--369},
-  series =        {SPAA '17},
-  title =         {Brief Announcement: Hazard Eras - Non-Blocking Memory
-                   Reclamation},
-  year =          {2017},
-  month =         jul,
-}
-```
-
-
-### QSense
-```bibtex
-@inproceedings{balmau-spaa-2016,
-  author =        {Balmau, Oana and Guerraoui, Rachid and
-                   Herlihy, Maurice and Zablotchi, Igor},
-  booktitle =     {Proc. of the 28th ACM Symp. on Parallelism
-                   in Algorithms and Architectures},
-  address =       {Pacific Grove, CA, USA},
-  pages =         {349--359},
-  series =        {SPAA '16},
-  title =         {Fast and Robust Memory Reclamation for Concurrent
-                   Data Structures},
-  year =          {2016},
-  month =         jul,
-}
-```
-
-### history-preserving persistency
-```bibtex
-@inproceedings{driscoll-stoc-1986,
-  author =        {Driscoll, James R. and Sarnak, Neil and Sleator, Daniel D. and
-                   Tarjan, Robert E.},
-  booktitle =     {Proc. of the 18th Ann. ACM Symp. on Theory of Computing},
-  address =       {Berkeley, CA, USA},
-  pages =         {109--121},
-  series =        {STOC '86},
-  title =         {Making Data Structures Persistent},
-  year =          {1986},
-  month =         may,
-}
-```
-
-### treiber stack
-```bibtex
-@techreport{treiber-tr-1986,
-  author =        {R. Kent Treiber},
-  institution =   {IBM Almaden Research Center},
-  month =         apr,
-  number =        {RJ 5118},
-  title =         {Systems Programming: Coping with Parallelism},
-  year =          {1986},
-}
-```
-
-### Universal concurrency construction
-```bibtex
-@article{herlihy-toplas-1993,
-  author =        {Herlihy, Maurice},
-  journal =       {ACM Trans. on Programming Languages and Systems},
-  month =         nov,
-  number =        {5},
-  pages =         {745--770},
-  title =         {A Methodology for Implementing Highly Concurrent Data
-                   Objects},
-  volume =        {15},
-  year =          {1993},
-}
-```
-
-### Functional data structures
-```bibtex
-@book{okasaki-book-1999,
-  author =        {Okasaki, Chris},
-  publisher =     {Cambridge University Press},
-  title =         {Purely functional data structures},
-  year =          {1999},
-  month =         jun,
-}
-```
-
-### Harris ordered list
-```bibtex
-@inproceedings{harris-disc-2001,
- author = {Harris, Timothy L.},
- title = {A Pragmatic Implementation of Non-blocking Linked-Lists},
- booktitle = {Proceedings of the 15th International Conference on Distributed Computing},
- series = {DISC '01},
- year = {2001},
- isbn = {3-540-42605-1},
- pages = {300--314},
- numpages = {15},
- url = {http://dl.acm.org.ezp.lib.rochester.edu/citation.cfm?id=645958.676105},
- acmid = {676105},
- publisher = {Springer-Verlag},
- address = {Lisbon, Portugal},
-	annote	= {
-Introduction of the mark and remove method for concurrent queues.
-	}
-} 
-```
-
-### Michael's hash map
-```bibtex
-@inproceedings{michael-podc-1996,
- author = {Michael, Maged M. and Scott, Michael L.},
- title = {Simple, Fast, and Practical Non-blocking and Blocking Concurrent Queue Algorithms},
- booktitle = {Proceedings of the 1996 ACM Symposium on Principles of Distributed Computing},
- series = {PODC '96},
- year = {1996},
- address = {Philadelphia, Pennsylvania, USA},
- pages = {267--275},
- numpages = {9},
- publisher = {ACM},
-	annote ={
-The classic M and S (M&S) queue.
-	}
-} 
-```
-
-### Natarajan-Mittal's tree
-```bibtex
-@inproceedings{natarajan-ppopp-2014,
- author = {Natarajan, Aravind and Mittal, Neeraj},
- title = {Fast Concurrent Lock-free Binary Search Trees},
- booktitle = {Proceedings of the 19th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
- series = {PPoPP '14},
- year = {2014},
- address = {Orlando, Florida, USA},
- pages = {317--328},
- numpages = {12},
- publisher = {ACM},
-} 
-```
-
-### Bonsai Tree
-```bibtex
-@inproceedings{clements-asplos-2012,
- author = {Clements, Austin T. and Kaashoek, M. Frans and Zeldovich, Nickolai},
- title = {Scalable Address Spaces Using RCU Balanced Trees},
- booktitle = {Proceedings of the Seventeenth International Conference on Architectural Support for Programming Languages and Operating Systems},
- series = {ASPLOS XVII},
- year = {2012},
- address = {London, England, UK},
- pages = {199--210},
- numpages = {12},
- publisher = {ACM},
- keywords = {RCU, concurrent balanced trees, lock-free algorithms, multicore, scalability, virtual memory},
-} 
-```
-
-### Jemalloc
-```bibtex
-@inproceedings{evans-bsdcan-2006,
-  title={A scalable concurrent malloc (3) implementation for FreeBSD},
-  author={Evans, Jason},
-  booktitle={Proceedings of the BSDCan Conference},
-  year={2006},
-	address = {Ottowa, Canada}
-}
-```
-
 
 # POMCAS related works
 
