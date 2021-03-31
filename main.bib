@@ -232,6 +232,35 @@ URCS.
 }
 ```
 
+### Clobber-NVM
+* like iDO, but use undo logging on stores that overwrites input.
+  on recovery, apply undo logs then interrupted transactions can
+  be safely re-executed from beginning.
+```bibtex
+@inproceedings{xu-asplos-2021,
+  title={Clobber-NVM: Log Less, Re-execute More},
+  author={Xu, Yi and Izraelevitz, Joseph and Swanson, Steven},
+  booktitle={Proceedings of International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS)},
+  year={2021}
+}
+```
+
+### PMThreads
+* allocate two NVM copies of a DRAM page; use one as an undo log
+  of the other. background thread atomically switch the role of
+  the two NVM copies.
+```bibtex
+@inproceedings{wu-asplos-2020,
+  title={PMThreads: Persistent memory threads harnessing versioned shadow copies},
+  author={Wu, Zhenwei and Lu, Kai and Nisbet, Andrew and Zhang, Wenzhe and Luj{\'a}n, Mikel},
+  booktitle={Proceedings of the 41st ACM SIGPLAN Conference on Programming Language Design and Implementation},
+  pages={623--637},
+  month = mar,
+  address={Lausanne, Switzerland},
+  year={2020}
+}
+```
+
 ## Transaction-based systems and other general systems:
 
 ### Mnemosyne
@@ -436,6 +465,24 @@ URCS.
   year={2020}
 }
 ```
+
+###TimeStone
+* TOC logging: transient (T) log in DRAM keeps a list of transient
+  versions of each object, and write back only the latest copy
+  once in a while; operation (O) log persists semantic data 
+  upon each transaction commit, similar to Pronto's semantic 
+  logging; checkpoint (C) log persists objects from DRAM with a
+  timestamp so the other two logs can be truncated when
+  appropriate.
+@inproceedings{krishnan-asplos-2020,
+  title={Durable transactional memory can scale with timestone},
+  author={Krishnan, R Madhava and Kim, Jaeho and Mathew, Ajit and Fu, Xinwei and Demeri, Anthony and Min, Changwoo and Kannan, Sudarsun},
+  booktitle={Proceedings of the Twenty-Fifth International Conference on Architectural Support for Programming Languages and Operating Systems},
+  pages={335--349},
+  year={2020},
+  month = mar,
+  address={Lausanne, Switzerland}
+}
 
 ## Others & Utils:
 
@@ -802,6 +849,7 @@ replay the ASL since the last snapshot after crashes.
  pages = {789-806},
  year = {2020},
  address = {Lausanne, Switzerland},
+ month = mar,
  publisher = {ACM},
 } 
 ```
@@ -818,6 +866,7 @@ replay the ASL since the last snapshot after crashes.
     numpages = {14},
     keywords = {persistent memory., durability, crash-consistency, datastructures},
     address = {Lausanne, Switzerland},
+    month = mar,
 	series = {ASPLOS ’20}
 }
 ```
