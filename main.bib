@@ -951,7 +951,7 @@ replay the ASL since the last snapshot after crashes.
 * keeping multiple "epochs" on-the-fly, since flushing to NVM goes all the way to the capacitor on NVM, which is expensive
 
 ```bibtex
-@inproceedings{10.1145/1629575.1629589,
+@inproceedings{condit-sosp-2009,
     author = {Condit, Jeremy and Nightingale, Edmund B. and Frost, Christopher and Ipek, Engin and Lee, Benjamin and Burger, Doug and Coetzee, Derrick},
     title = {Better I/O through Byte-Addressable, Persistent Memory},
     year = {2009},
@@ -966,8 +966,6 @@ replay the ASL since the last snapshot after crashes.
     address = {Big Sky, Montana, USA},
     series = {SOSP ’09}
 }
-  
-
 ```
 
 
@@ -995,6 +993,31 @@ replay the ASL since the last snapshot after crashes.
   year={2017},
   organization={ACM},
   address={Shanghai, China}
+}
+```
+
+### ZoFS - protection via coffers
+* put all files with the same permission into the same "coffer"
+  * syscalls into kernel only needed for the first time each process access a coffer
+* kernel sets PKU bits to restrict access of each userspace fs lib
+  * protection from stray writes is done by opening a write window with PRKPRU instruction _only_ when writes happen in fs libs, which are trusted.
+* question: if fs libs (ufs) are completely trusted, why are coffers still necessary?
+  * applications are not trusted. Mapping all data and matadata naively in user space is dangerous since applications can bypass fs libs and access mapped data diretly.
+  * perhaps it also has something to do with fault isolation mentioned in 3.4.2.
+```bibtex
+@inproceedings{dong-sosp-2019,
+author = {Dong, Mingkai and Bu, Heng and Yi, Jifei and Dong, Benchao and Chen, Haibo},
+title = {Performance and Protection in the ZoFS User-Space NVM File System},
+year = {2019},
+isbn = {9781450368735},
+publisher = {Association for Computing Machinery},
+url = {https://doi.org/10.1145/3341301.3359637},
+doi = {10.1145/3341301.3359637},
+booktitle = {Proceedings of the 27th ACM Symposium on Operating Systems Principles},
+pages = {478–493},
+numpages = {16},
+address = {Huntsville, Ontario, Canada},
+series = {SOSP '19}
 }
 ```
 
