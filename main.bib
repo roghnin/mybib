@@ -1021,6 +1021,84 @@ series = {SOSP '19}
 }
 ```
 
+### EvFS
+* a file system based on SPDK's user-level libraries and PMDK's NVM library
+  * No syscall is needed for POSIX fs operations
+  * uses SPDK's Blobstore to provide UNIX dir-file system on NVM namespaces
+* does not support mmap yet
+```bibtex
+@inproceedings {yoshimura-hotstorage-2019,
+author = {Takeshi Yoshimura and Tatsuhiro Chiba and Hiroshi Horii},
+title = {EvFS: User-level, Event-Driven File System for Non-Volatile Memory},
+booktitle = {11th {USENIX} Workshop on Hot Topics in Storage and File Systems (HotStorage 19)},
+year = {2019},
+address = {Renton, WA},
+url = {https://www.usenix.org/conference/hotstorage19/presentation/yoshimura},
+publisher = {{USENIX} Association},
+month = jul,
+}
+```
+
+### Aerie
+```bibtex
+@inproceedings{volos-2014-eurosys,
+author = {Volos, Haris and Nalli, Sanketh and Panneerselvam, Sankarlingam and Varadarajan, Venkatanathan and Saxena, Prashant and Swift, Michael M.},
+title = {Aerie: Flexible File-System Interfaces to Storage-Class Memory},
+year = {2014},
+isbn = {9781450327046},
+publisher = {Association for Computing Machinery},
+url = {https://doi.org/10.1145/2592798.2592810},
+doi = {10.1145/2592798.2592810},
+booktitle = {Proceedings of the Ninth European Conference on Computer Systems},
+articleno = {14},
+numpages = {14},
+address = {Amsterdam, The Netherlands},
+series = {EuroSys '14}
+}
+```
+
+## storage engines
+
+### PASTE - zero-copy networking on NVM
+* via DMA, store packets directly into buffers in NVM
+  * a persistent pool provides (Ppool) fixed-size packet buffers indexed y 32-bit integers
+  * applications sotre their logs (e.g. a list comprising all requests) in their own NVM files (plog)
+  * a ring buffer (Pring) lists free buffers as DMA targets of NIC. Applications poll on the ring, persists every newly DMA'ed buffer, log it, and replace the persisted entry in Pring with a new one.
+* code: code: https://github.com/micchie/paste
+```bibtex
+@inproceedings {honda-2018-nsdi,
+author = {Michio Honda and Giuseppe Lettieri and Lars Eggert and Douglas Santry},
+title = {{PASTE}: A Network Programming Interface for Non-Volatile Main Memory},
+booktitle = {15th {USENIX} Symposium on Networked Systems Design and Implementation ({NSDI} 18)},
+year = {2018},
+isbn = {978-1-939133-01-4},
+address = {Renton, WA},
+pages = {17--33},
+url = {https://www.usenix.org/conference/nsdi18/presentation/honda},
+publisher = {{USENIX} Association},
+month = apr,
+}
+```
+
+### nvramdisk
+* a straightforward adoption of ramdisk on NVM
+  * use a simple mapping table between logical and physical pages
+  * use shadow blocks for transactional (atomic) block update
+  * journal the mapping table to provide ordering guarantee given crashes
+* code: https://github.com/ESOS-Lab/NVRAMDISK/
+```bibtex
+@article{jung-toc-2015,
+  title={nvramdisk: A transactional block device driver for non-volatile ram},
+  author={Jung, Jaemin and Won, Youjip},
+  journal={IEEE Transactions on Computers},
+  volume={65},
+  number={2},
+  pages={589--600},
+  year={2015},
+  publisher={IEEE}
+}
+```
+
 ## Data Serialization
 
 ### Performance survey of serialization libraries
